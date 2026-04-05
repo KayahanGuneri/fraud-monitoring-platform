@@ -52,3 +52,9 @@ fraud-monitoring-platform/
   docs/
   shared/
   scripts/
+
+Status
+
+Project is currently in bootstrap phase.
+
+```
