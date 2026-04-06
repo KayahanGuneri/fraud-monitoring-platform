@@ -2,13 +2,13 @@
 
 ## Project Overview
 
-This project is a production-grade portfolio application designed to demonstrate:
+This is a production-grade portfolio project designed to demonstrate:
 
 - microservices architecture
 - asynchronous processing
-- fraud detection rules
+- rule-based fraud analysis
 - PostgreSQL persistence
-- Redis-based fast state usage
+- Redis-based fast state and cache usage
 - RabbitMQ event-driven messaging
 - real-time dashboard updates
 - MCP integration for AI agent tools
@@ -28,7 +28,15 @@ This project is a production-grade portfolio application designed to demonstrate
 - Redis
 - RabbitMQ
 - Docker
-- docker-compose
+- Docker Compose
+
+## Current Status
+
+Completed foundations:
+- monorepo bootstrap
+- Git/GitHub setup
+- Phase 1 backend service skeletons
+- Phase 1 DevOps local infrastructure foundation
 
 ## Planned Phases
 
@@ -47,9 +55,19 @@ This project is a production-grade portfolio application designed to demonstrate
 ```text
 fraud-monitoring-platform/
   services/
+    transaction-api-service/
+    fraud-worker-service/
+    mcp-server-service/
   apps/
+    frontend-web/
   infra/
+    docker-compose/
   docs/
+    architecture/
+    api/
+    runbooks/
+    prompts/
   shared/
+    event-contracts/
+    common-schemas/
   scripts/
-```
