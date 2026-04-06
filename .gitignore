@@ -21,6 +21,7 @@ target/
 build/
 out/
 .gradle/
+bin/
 
 # Node
 node_modules/
