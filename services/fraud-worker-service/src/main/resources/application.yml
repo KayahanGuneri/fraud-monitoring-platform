@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: fraud-worker-service
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
+server:
+  port: 8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+  health:
+    rabbit:
+      enabled: false
+    redis:
+      enabled: false
+    db:
+      enabled: false
