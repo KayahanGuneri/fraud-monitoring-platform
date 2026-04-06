@@ -1,25 +1,71 @@
-version: "3.9"
+name: fraud-monitoring-platform
 
 services:
   postgres:
     image: postgres:16
     container_name: fraud-platform-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: fraud_platform
       POSTGRES_USER: fraud_user
       POSTGRES_PASSWORD: fraud_pass
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fraud_user -d fraud_platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - fraud-platform-network
 
   redis:
     image: redis:7
     container_name: fraud-platform-redis
+    restart: unless-stopped
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    networks:
+      - fraud-platform-network
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: fraud-platform-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: fraud_admin
+      RABBITMQ_DEFAULT_PASS: fraud_admin_pass
     ports:
       - "5672:5672"
       - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+    networks:
+      - fraud-platform-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  rabbitmq_data:
+
+networks:
+  fraud-platform-network:
+    driver: bridge
