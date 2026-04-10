@@ -1,17 +1,14 @@
-function Header() {
-  return (
-    <header className="dashboard-header">
-      <div>
-        <p className="eyebrow">Fraud Monitoring Platform</p>
-        <h1>Transaction Monitoring Dashboard</h1>
-        <p className="header-subtitle">
-          Portfolio-grade fraud analytics shell with mock operational data.
-        </p>
-      </div>
+interface HeaderProps {
+  title: string
+  subtitle: string
+}
 
-      <div className="header-actions">
-        <div className="header-chip">Environment: Local</div>
-        <div className="header-chip">Mode: Mock Data</div>
+function Header({ title, subtitle }: HeaderProps) {
+  return (
+    <header className="page-header">
+      <div>
+        <h1 className="page-header__title">{title}</h1>
+        <p className="page-header__subtitle">{subtitle}</p>
       </div>
     </header>
   )

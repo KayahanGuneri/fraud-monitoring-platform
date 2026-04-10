@@ -1,17 +1,21 @@
-import type { MetricCardData } from '../../types/dashboard'
+import type { OverviewMetric } from '../../types/dashboard'
 
 interface MetricCardProps {
-  metric: MetricCardData
+  metric: OverviewMetric
 }
 
 function MetricCard({ metric }: MetricCardProps) {
   return (
     <article className="metric-card">
-      <p className="metric-title">{metric.title}</p>
-      <div className="metric-row">
-        <h3>{metric.value}</h3>
-        <span className={`trend-badge ${metric.trend}`}>{metric.delta}</span>
+      <div className="metric-card__header">
+        <span className="metric-card__label">{metric.title}</span>
+        <span className={`metric-card__trend metric-card__trend--${metric.trend}`}>
+          {metric.change}
+        </span>
       </div>
+
+      <strong className="metric-card__value">{metric.value}</strong>
+      <p className="metric-card__description">{metric.description}</p>
     </article>
   )
 }

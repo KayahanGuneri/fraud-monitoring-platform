@@ -1,61 +1,62 @@
 import {
   Bar,
   CartesianGrid,
+  ComposedChart,
   Legend,
+  Line,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
-  BarChart,
 } from 'recharts'
-import type { VolumeDataPoint } from '../../types/dashboard'
+import type { VolumeChartItem } from '../../types/dashboard'
+import SectionCard from '../common/SectionCard'
 
 interface VolumeChartProps {
-  data: VolumeDataPoint[]
+  data: VolumeChartItem[]
 }
 
 function VolumeChart({ data }: VolumeChartProps) {
   return (
-    <section className="panel chart-panel">
-      <div className="panel-header">
-        <div>
-          <p className="panel-eyebrow">Weekly volume</p>
-          <h2>Transactions vs suspicious flags</h2>
-        </div>
-      </div>
-
-      <div className="chart-wrapper">
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" />
-            <XAxis dataKey="label" stroke="#94a3b8" />
-            <YAxis stroke="#94a3b8" />
+    <SectionCard
+      title="Transaction Volume"
+      subtitle="Weekly volume and suspicious transaction trend"
+    >
+      <div className="chart-wrapper chart-wrapper--lg">
+        <ResponsiveContainer width="100%" height={320}>
+          <ComposedChart data={data}>
+            <CartesianGrid stroke="#243041" strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="label" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} />
             <Tooltip
               contentStyle={{
-                backgroundColor: '#131a2f',
-                border: '1px solid #27314d',
+                backgroundColor: '#0f172a',
+                border: '1px solid #243041',
                 borderRadius: '12px',
                 color: '#e5e7eb',
               }}
-              labelStyle={{ color: '#e5e7eb' }}
             />
-            <Legend />
+            <Legend wrapperStyle={{ color: '#cbd5e1' }} />
             <Bar
-              dataKey="transactions"
-              name="Transactions"
-              fill="#60a5fa"
+              dataKey="total"
+              name="Total Transactions"
+              fill="#1d4ed8"
               radius={[8, 8, 0, 0]}
+              maxBarSize={44}
             />
-            <Bar
+            <Line
+              type="monotone"
               dataKey="suspicious"
               name="Suspicious"
-              fill="#ef4444"
-              radius={[8, 8, 0, 0]}
+              stroke="#f87171"
+              strokeWidth={3}
+              dot={{ r: 4, fill: '#f87171' }}
+              activeDot={{ r: 6 }}
             />
-          </BarChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </div>
-    </section>
+    </SectionCard>
   )
 }
 
