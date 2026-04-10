@@ -1,45 +1,79 @@
-export type MetricTrend = 'up' | 'down' | 'neutral'
+export type TransactionStatus = 'APPROVED' | 'PENDING' | 'REVIEW' | 'DECLINED'
+export type FraudDecision = 'NORMAL' | 'SUSPICIOUS'
+export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
 
-export interface MetricCardData {
-  title: string
-  value: string
-  delta: string
-  trend: MetricTrend
-}
-
-export interface TransactionRow {
+export interface Transaction {
   id: string
   userId: string
-  amount: string
-  location: string
-  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH'
-  status: 'NORMAL' | 'SUSPICIOUS'
-  timestamp: string
+  userName: string
+  amount: number
+  currency: string
+  status: TransactionStatus
+  fraudDecision: FraudDecision
+  riskLevel: RiskLevel
+  country: string
+  city: string
+  paymentMethod: string
+  createdAt: string
 }
 
-export interface ActivityItem {
+export interface OverviewMetric {
+  title: string
+  value: string
+  change: string
+  trend: 'up' | 'down' | 'neutral'
+  description: string
+}
+
+export interface SuspiciousOverviewItem {
+  title: string
+  count: number
+  description: string
+  severity: RiskLevel
+}
+
+export interface UserRiskSummary {
+  userId: string
+  userName: string
+  riskLevel: RiskLevel
+  suspiciousTransactions: number
+  lastActivity: string
+  flaggedReason: string
+}
+
+export interface RecentActivityItem {
   id: string
   title: string
   description: string
-  time: string
-  severity: 'info' | 'warning' | 'critical'
+  timestamp: string
+  type: 'transaction' | 'fraud' | 'user'
+  severity: RiskLevel
 }
 
-export interface VolumeDataPoint {
+export interface VolumeChartItem {
   label: string
-  transactions: number
+  total: number
   suspicious: number
 }
 
-export interface RiskDistributionPoint {
+export interface RiskDistributionItem {
+  name: string
+  value: number
+}
+
+export interface FraudDecisionChartItem {
   name: string
   value: number
 }
 
 export interface DashboardData {
-  metrics: MetricCardData[]
-  volumeSeries: VolumeDataPoint[]
-  riskDistribution: RiskDistributionPoint[]
-  suspiciousTransactions: TransactionRow[]
-  recentActivity: ActivityItem[]
+  overviewMetrics: OverviewMetric[]
+  suspiciousOverview: SuspiciousOverviewItem[]
+  transactions: Transaction[]
+  userRiskSummaries: UserRiskSummary[]
+  recentActivity: RecentActivityItem[]
+  volumeData: VolumeChartItem[]
+  riskDistribution: RiskDistributionItem[]
+  fraudDecisionData: FraudDecisionChartItem[]
+  lastUpdated: string
 }
