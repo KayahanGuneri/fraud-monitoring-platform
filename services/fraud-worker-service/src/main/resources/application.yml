@@ -1,13 +1,25 @@
 spring:
   application:
     name: fraud-worker-service
+
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 
+  rabbitmq:
+    host: ${RABBITMQ_HOST:127.0.0.1}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:fraud_admin}
+    password: ${RABBITMQ_PASSWORD:fraud_admin_pass}
+
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+
 server:
-  port: 8082
+  port: ${SERVER_PORT:8082}
 
 management:
   endpoints:
@@ -24,3 +36,10 @@ management:
       enabled: false
     db:
       enabled: false
+
+app:
+  messaging:
+    exchange: fraud.transaction.exchange
+    transaction-created-queue: fraud.transaction.created.queue
+    transaction-created-routing-key: transaction.created
+    transaction-created-event-type: transaction.created

@@ -42,3 +42,10 @@ management:
   health:
     rabbit:
       enabled: false
+
+app:
+  messaging:
+    exchange: fraud.transaction.exchange
+    transaction-created-queue: fraud.transaction.created.queue
+    transaction-created-routing-key: transaction.created
+    transaction-created-event-type: transaction.created
