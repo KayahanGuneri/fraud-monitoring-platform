@@ -41,7 +41,7 @@ management:
       show-details: always
   health:
     rabbit:
-      enabled: false
+      enabled: true
 
 app:
   messaging:

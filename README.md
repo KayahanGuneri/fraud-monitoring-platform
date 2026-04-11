@@ -248,9 +248,27 @@ After this phase:
 
 ## Next Step
 
-Phase 3:
+Current active work:
 
-* implement async transaction flow
-* publish events via RabbitMQ
-* connect fraud-worker-service
-* define event contracts
+* Phase 3 Async Processing completed
+* RabbitMQ-based event-driven communication implemented
+* fraud-worker-service integrated with transaction-api-service
+
+---
+
+## Phase 3 Highlights
+
+Phase 3 introduces the first production-style asynchronous flow:
+
+- transaction-api-service publishes transaction-created events
+- RabbitMQ handles message routing via exchange/queue/binding
+- fraud-worker-service consumes events
+- placeholder fraud processing pipeline is executed
+
+Verified capabilities:
+
+- transaction persistence in PostgreSQL
+- event publishing to RabbitMQ
+- queue creation and binding via Spring AMQP
+- event consumption by worker service
+- end-to-end async flow validation

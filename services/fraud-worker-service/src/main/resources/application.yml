@@ -31,12 +31,11 @@ management:
       show-details: always
   health:
     rabbit:
-      enabled: false
+      enabled: true
     redis:
       enabled: false
     db:
       enabled: false
-
 app:
   messaging:
     exchange: fraud.transaction.exchange
