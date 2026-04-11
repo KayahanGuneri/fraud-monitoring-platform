@@ -40,6 +40,11 @@ function DashboardPage() {
     )
   }
 
+  const hasSuspiciousOverview = data.suspiciousOverview.length > 0
+  const hasTransactions = data.transactions.length > 0
+  const hasUserRiskSummaries = data.userRiskSummaries.length > 0
+  const hasRecentActivity = data.recentActivity.length > 0
+
   return (
     <AppShell>
       <Header
@@ -54,7 +59,7 @@ function DashboardPage() {
           ))}
         </div>
 
-        {data.suspiciousOverview.length > 0 ? (
+        {hasSuspiciousOverview ? (
           <SuspiciousOverviewCards items={data.suspiciousOverview} />
         ) : (
           <EmptyState
@@ -71,7 +76,7 @@ function DashboardPage() {
 
         <div className="dashboard-page__content">
           <div className="dashboard-page__main">
-            {data.transactions.length > 0 ? (
+            {hasTransactions ? (
               <DashboardTable transactions={data.transactions} />
             ) : (
               <EmptyState
@@ -82,7 +87,7 @@ function DashboardPage() {
           </div>
 
           <div className="dashboard-page__side">
-            {data.userRiskSummaries.length > 0 ? (
+            {hasUserRiskSummaries ? (
               <UserRiskSummaryPanel users={data.userRiskSummaries} />
             ) : (
               <EmptyState
@@ -91,7 +96,7 @@ function DashboardPage() {
               />
             )}
 
-            {data.recentActivity.length > 0 ? (
+            {hasRecentActivity ? (
               <RecentActivityPanel items={data.recentActivity} />
             ) : (
               <EmptyState

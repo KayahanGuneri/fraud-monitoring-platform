@@ -1,6 +1,8 @@
 export type TransactionStatus = 'APPROVED' | 'PENDING' | 'REVIEW' | 'DECLINED'
 export type FraudDecision = 'NORMAL' | 'SUSPICIOUS'
 export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
+export type MetricTrend = 'up' | 'down' | 'neutral'
+export type ActivityType = 'transaction' | 'fraud' | 'user'
 
 export interface Transaction {
   id: string
@@ -21,7 +23,7 @@ export interface OverviewMetric {
   title: string
   value: string
   change: string
-  trend: 'up' | 'down' | 'neutral'
+  trend: MetricTrend
   description: string
 }
 
@@ -46,7 +48,7 @@ export interface RecentActivityItem {
   title: string
   description: string
   timestamp: string
-  type: 'transaction' | 'fraud' | 'user'
+  type: ActivityType
   severity: RiskLevel
 }
 
