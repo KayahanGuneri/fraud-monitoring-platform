@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { dashboardService } from '../services/dashboardService'
 import type { DashboardData } from '../types/dashboard'
+import { formatDashboardErrorMessage } from '../utils/dashboardFormatters'
 
 interface UseDashboardDataResult {
   data: DashboardData | null
   isLoading: boolean
   isError: boolean
   errorMessage: string | null
+  reload: () => Promise<void>
 }
 
 export function useDashboardData(): UseDashboardDataResult {
@@ -15,10 +17,27 @@ export function useDashboardData(): UseDashboardDataResult {
   const [isError, setIsError] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  useEffect(() => {
-    let isMounted = true
+  const loadDashboardData = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setIsError(false)
+      setErrorMessage(null)
 
-    async function loadDashboardData() {
+      const result = await dashboardService.getDashboardData()
+      setData(result)
+    } catch (error) {
+      setData(null)
+      setIsError(true)
+      setErrorMessage(formatDashboardErrorMessage(error))
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    let isActive = true
+
+    async function initializeDashboardData() {
       try {
         setIsLoading(true)
         setIsError(false)
@@ -26,20 +45,21 @@ export function useDashboardData(): UseDashboardDataResult {
 
         const result = await dashboardService.getDashboardData()
 
-        if (!isMounted) {
+        if (!isActive) {
           return
         }
 
         setData(result)
-      } catch {
-        if (!isMounted) {
+      } catch (error) {
+        if (!isActive) {
           return
         }
 
+        setData(null)
         setIsError(true)
-        setErrorMessage('Dashboard data could not be loaded.')
+        setErrorMessage(formatDashboardErrorMessage(error))
       } finally {
-        if (!isMounted) {
+        if (!isActive) {
           return
         }
 
@@ -47,10 +67,10 @@ export function useDashboardData(): UseDashboardDataResult {
       }
     }
 
-    loadDashboardData()
+    void initializeDashboardData()
 
     return () => {
-      isMounted = false
+      isActive = false
     }
   }, [])
 
@@ -59,5 +79,6 @@ export function useDashboardData(): UseDashboardDataResult {
     isLoading,
     isError,
     errorMessage,
+    reload: loadDashboardData,
   }
 }
